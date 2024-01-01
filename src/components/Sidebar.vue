@@ -21,22 +21,25 @@
 		<div class="flex"></div>
 		
     <div class="menu">
-    <router-link v-if="sidebarData.length > 0" :to="sidebarData[sidebarData.length - 1].to" class="button">
-      <span class="material-icons">{{ sidebarData[sidebarData.length - 1].iconDescription }}</span>
-      <span class="text">{{ sidebarData[sidebarData.length - 1].title }}</span>
+    <router-link :to="lastMenuItem?.to" class="button">
+      <span class="material-icons">{{ lastMenuItem?.iconDescription }}</span>
+      <span class="text">{{ lastMenuItem?.title }}</span>
     </router-link>
   </div>
 	</aside>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import logoURL from '../assets/logo.png'
 import { SidebarData } from './Sidebar.defaults'
 import { MenuItemInterface } from "./types"
 
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
 const sidebarData: MenuItemInterface[] = SidebarData
+const lastMenuItem: MenuItemInterface | undefined = computed(() => {
+  return sidebarData.length > 0 ? sidebarData[sidebarData.length - 1] : undefined
+})
 
 const ToggleMenu = () => {
 	is_expanded.value = !is_expanded.value
